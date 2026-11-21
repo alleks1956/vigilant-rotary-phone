@@ -1,0 +1,21 @@
+# Place in the repo at .github/workflows/build-exe.yml
+# Run: Actions -> Build EXE -> Run workflow. The EXE appears under "Artifacts".
+name: Build EXE
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install pillow pyinstaller
+      - run: pyinstaller --onefile --windowed --name BatchPhotoEditor batch_photo_editor.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: BatchPhotoEditor
+          path: dist/BatchPhotoEditor.exe
